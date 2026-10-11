@@ -649,7 +649,36 @@
     renderAdminFriends();
   });
 
-  renderFriends();
+ 
+async function loadFriendsFromFile() {
+  try {
+    const response = await fetch("./friends.json", { cache: "no-store" });
+
+    if (!response.ok) {
+      throw new Error("Could not load friends.json");
+    }
+
+    const data = await response.json();
+
+    if (!Array.isArray(data)) {
+      throw new Error("friends.json must contain a list");
+    }
+
+    // Use the file's students when this browser has no saved list.
+    if (!localStorage.getItem(STORAGE_KEY)) {
+      students = data;
+    }
+
+    renderFriends();
+    renderAdminFriends();
+  } catch (error) {
+    console.error("Could not load student list:", error);
+    renderFriends();
+  }
+}
+
+loadFriendsFromFile();
+
 </script>
 
 </body>
