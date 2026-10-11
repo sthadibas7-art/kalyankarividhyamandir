@@ -392,7 +392,13 @@
     <h3>Remove a Friend</h3>
     <p style="margin:8px 0">Use the delete button on a classmate's card below.</p>
 
-    <div id="adminFriendsGrid" class="friends-grid"></div>
+    <div id="adminFriendsGrid" class="friends-grid"></div><button
+  class="primary"
+  type="button"
+  onclick="exportStudentList()"
+>
+  📥 Export Student List
+</button>
 
     <button id="logoutButton" class="danger" type="button">Logout</button>
   </div>
@@ -412,15 +418,18 @@
   let isAdminLoggedIn = false;
   let students = [];
 
-  // Load saved entries from this browser.
+
+ // Load saved entries from this browser, if available.
   try {
     const savedStudents = localStorage.getItem(STORAGE_KEY);
-    if (savedStudents) {
-      students = JSON.parse(savedStudents);
-      if (!Array.isArray(students)) students = [];
+    if (savedStudents !== null) {
+      const parsedStudents = JSON.parse(savedStudents);
+      if (Array.isArray(parsedStudents)) {
+        students = parsedStudents;
+      }
     }
   } catch (error) {
-    students = [];
+    console.error("Could not read saved students:", error);
   }
 
   function saveStudents() {
@@ -650,7 +659,18 @@
   });
 
  
-async function loadFriendsFromFile() {
+async function loadFriendsFromFile() {function exportStudentList() {
+  const json = JSON.stringify(students, null, 2);
+  const blob = new Blob([json], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "friends.json";
+  link.click();
+
+  URL.revokeObjectURL(url);
+}
   try {
     const response = await fetch("./friends.json", { cache: "no-store" });
 
@@ -677,7 +697,20 @@ async function loadFriendsFromFile() {
   }
 }
 
-loadFriendsFromFile();
+loadFriendsFromFile();function exportStudentList() {
+  const json = JSON.stringify(students, null, 2);
+  const blob = new Blob([json], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "friends.json";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  URL.revokeObjectURL(url);
+}
 
 </script>
 
