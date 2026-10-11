@@ -487,7 +487,7 @@
     updateAdminView();
   });
 
-  function renderFriends() {
+  () {function renderFriends
     const grid = document.getElementById("friendsGrid");
     const search = document.getElementById("searchInput").value
       .trim().toLowerCase();
@@ -658,24 +658,29 @@
     renderAdminFriends();
   });
 
- 
-async function loadFriendsFromFile() {
 async function loadFriendsFromFile() {
   try {
-    const response = await fetch("./friends.json", { cache: "no-store" });
+    const savedStudents = localStorage.getItem(STORAGE_KEY);
 
-    if (!response.ok) {
-      throw new Error("Could not load friends.json");
-    }
+    if (savedStudents) {
+      students = JSON.parse(savedStudents);
+    } else {
+      const response = await fetch("./friends.json", {
+        cache: "no-store"
+      });
 
-    const data = await response.json();
+      if (!response.ok) {
+        throw new Error("Could not load friends.json");
+      }
 
-    if (!Array.isArray(data)) {
-      throw new Error("friends.json must contain a list");
-    }
+      const data = await response.json();
 
-    if (!localStorage.getItem(STORAGE_KEY)) {
+      if (!Array.isArray(data)) {
+        throw new Error("friends.json must contain a list");
+      }
+
       students = data;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(students));
     }
 
     renderFriends();
@@ -685,6 +690,7 @@ async function loadFriendsFromFile() {
     renderFriends();
   }
 }
+ 
 
 function exportStudentList() {
   const json = JSON.stringify(students, null, 2);
@@ -702,7 +708,7 @@ function exportStudentList() {
 }
 
 loadFriendsFromFile();
-}
+
 </script>
 
 </body>
