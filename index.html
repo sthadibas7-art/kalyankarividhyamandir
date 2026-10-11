@@ -1,0 +1,656 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Friends Directory</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f6fb;
+      color: #172033;
+    }
+
+    header {
+      background: #14213d;
+      color: white;
+      padding: 22px 6%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    header h1 {
+      font-size: 24px;
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    button {
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+      padding: 11px 15px;
+      font-weight: bold;
+    }
+
+    nav button {
+      color: white;
+      background: #263858;
+    }
+
+    nav button:hover {
+      background: #4361ee;
+    }
+
+    .page {
+      display: none;
+      padding: 35px 6%;
+      min-height: 75vh;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #4361ee, #7209b7);
+      color: white;
+      text-align: center;
+      padding: 65px 20px;
+      border-radius: 18px;
+    }
+
+    .hero h2 {
+      font-size: 38px;
+      margin-bottom: 15px;
+    }
+
+    .hero p {
+      line-height: 1.7;
+      margin-bottom: 22px;
+    }
+
+    .primary {
+      background: #4361ee;
+      color: white;
+    }
+
+    .hero button {
+      background: white;
+      color: #263858;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 18px;
+      margin-top: 25px;
+    }
+
+    .feature, .panel {
+      background: white;
+      padding: 22px;
+      border-radius: 12px;
+      box-shadow: 0 4px 14px #14213d12;
+    }
+
+    .feature h3 {
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      margin-bottom: 20px;
+    }
+
+    .search {
+      width: 100%;
+      padding: 13px;
+      margin-bottom: 22px;
+      border: 1px solid #ccd3df;
+      border-radius: 9px;
+      font-size: 16px;
+    }
+
+    
+.friends-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 300px));
+  gap: 20px;
+  align-items: start;
+}
+
+.friend-card {
+  width: 100%;
+  max-width: 300px;
+  background: white;
+  border: 1px solid #dce3ee;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 5px 18px rgba(20, 33, 61, 0.12);
+  text-align: center;
+}
+
+.friend-card img {
+  display: block;
+  width: 100%;
+  height: 210px;
+  object-fit: contain;
+  object-position: center;
+  background: #eef3f9;
+}
+
+.friend-info {
+  padding: 16px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+  text-align: left;
+}
+
+.friend-info h3 {
+  color: #263858;
+  font-size: 19px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.friend-info p {
+  border-top: 1px solid #edf0f5;
+  padding: 6px 0;
+  font-size: 14px;
+}
+
+.friend-info button {
+  width: 100%;
+}
+.friends-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 20px;
+    }
+
+    .friend-card {
+      background: white;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 4px 14px #14213d15;
+      text-align: center;
+    }
+
+    .friend-card img {
+      display: block;
+      width: 100%;
+      height: 230px;
+      object-fit: cover;
+      background: #e1e7f0;
+    }
+
+    .friend-info {
+      padding: 18px;
+      line-height: 1.8;
+      overflow-wrap: anywhere;
+    }
+
+    .friend-info h3 {
+      color: #263858;
+      margin-bottom: 7px;
+    }
+
+    .empty {
+      padding: 25px;
+      background: white;
+      border-radius: 10px;
+      text-align: center;
+      grid-column: 1 / -1;
+    }
+
+    form {
+      display: grid;
+      gap: 13px;
+      margin-top: 18px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccd3df;
+      border-radius: 8px;
+      font: inherit;
+    }
+
+    textarea {
+      min-height: 85px;
+      resize: vertical;
+    }
+
+    .notice {
+      padding: 13px;
+      background: #fff4d6;
+      border-radius: 8px;
+      margin: 14px 0;
+      line-height: 1.5;
+    }
+
+    .danger {
+      background: #d62828;
+      color: white;
+      margin-top: 8px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    footer {
+      background: #14213d;
+      color: white;
+      text-align: center;
+      padding: 22px;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 600px) {
+      header {
+        align-items: flex-start;
+      }
+
+      header h1 {
+        font-size: 21px;
+      }
+
+      .hero h2 {
+        font-size: 29px;
+      }
+
+      .page {
+        padding: 25px 5%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>🎓 Our Friends</h1>
+  <nav>
+    <button onclick="showPage('home')">Home</button>
+    <button onclick="showPage('friends')">Friends List</button>
+    <button onclick="showPage('about')">About School</button>
+    <button onclick="showPage('admin')">Admin</button>
+  </nav>
+</header>
+
+<!-- HOME PAGE -->
+<section id="home" class="page active">
+  <div class="hero">
+    <h2>Welcome to Our Class! 🎉</h2>
+    <p>
+      A place to celebrate friendship, memories and our school journey.
+      Meet our classmates and explore our class directory.
+    </p>
+    <button onclick="showPage('friends')">Meet Our Friends →</button>
+  </div>
+
+  <div class="features">
+    <div class="feature">
+      <h3>👥 Friends Directory</h3>
+      <p>Find classmates by name or roll number.</p>
+    </div>
+    <div class="feature">
+      <h3>📸 Class Memories</h3>
+      <p>Display classmates' photos with their permission.</p>
+    </div>
+    <div class="feature">
+      <h3>🏫 Our School</h3>
+      <p>Learn about our school and class.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FRIENDS PAGE -->
+<section id="friends" class="page">
+  <h2 class="section-title">👥 Friends List</h2>
+  <input
+    id="searchInput"
+    class="search"
+    type="search"
+    placeholder="Search by name or roll number..."
+    oninput="renderFriends()"
+  >
+
+  <div id="friendsGrid" class="friends-grid"></div>
+</section>
+
+<!-- ABOUT PAGE -->
+<section id="about" class="page">
+  <div class="panel">
+    <h2 class="section-title">🏫 About Our School</h2>
+    <p><strong>School name:</strong> Kalyankari Vidhya Mandir</p>
+    <p><strong>Class:</strong> 9</p>
+    <p><strong>Location:</strong> Bidur-2-Nuwakot</p>
+    <br>
+    <p>
+      Our class is an Class full of Zoo animals like Kadaknath,Hatti,Khasi,fox,pado,etc.
+    </p>
+    <br>
+    <p>This website is made by an Great people.</p>
+  </div>
+</section>
+
+<!-- ADMIN PAGE -->
+<section id="admin" class="page">
+  <h2 class="section-title">🔐 Admin Panel</h2>
+
+  <div id="loginPanel" class="panel">
+    <h3>Admin Login</h3>
+    <p style="margin-top:10px">Enter your admin password to manage the directory.</p>
+
+    <form id="loginForm">
+      <input
+        id="adminPassword"
+        type="password"
+        placeholder="Admin password"
+        required
+      >
+      <button class="primary" type="submit">Login</button>
+      <p id="loginMessage" role="status"></p>
+    </form>
+  </div>
+
+  <div id="adminPanel" class="panel hidden">
+    <h3>Manage Friends</h3>
+    <p style="margin-top:8px">Add a classmate to the directory.</p>
+
+    <form id="studentForm">
+      <input id="studentName" placeholder="Student name" maxlength="60" required>
+      <input id="studentRoll" placeholder="Roll number" maxlength="20" required>
+      <input id="studentHouse" placeholder="House / group (optional)" maxlength="50">
+      <input id="studentAddress" placeholder="General area only (optional)" maxlength="100">
+      <label for="studentPhoto">Student photo (optional)</label>
+      <input id="studentPhoto" type="file" accept="image/png,image/jpeg,image/webp">
+      <button class="primary" type="submit">➕ Add Friend</button>
+      <p id="formMessage" role="status"></p>
+    </form>
+
+    <hr style="margin:24px 0">
+
+    <h3>Remove a Friend</h3>
+    <p style="margin:8px 0">Use the delete button on a classmate's card below.</p>
+
+    <div id="adminFriendsGrid" class="friends-grid"></div>
+
+    <button id="logoutButton" class="danger" type="button">Logout</button>
+  </div>
+</section>
+
+<footer>
+  <p>Made with ❤️ for our class</p>
+  <p>Friendship • Learning • Memories</p>
+</footer>
+
+<script>
+  // DEMO ONLY: This password is visible in the website code.
+  // It is not secure authentication for a public website.
+  const ADMIN_PASSWORD = "1234";
+
+  const STORAGE_KEY = "classFriendsDirectoryV1";
+  let isAdminLoggedIn = false;
+  let students = [];
+
+  // Load saved entries from this browser.
+  try {
+    const savedStudents = localStorage.getItem(STORAGE_KEY);
+    if (savedStudents) {
+      students = JSON.parse(savedStudents);
+      if (!Array.isArray(students)) students = [];
+    }
+  } catch (error) {
+    students = [];
+  }
+
+  function saveStudents() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(students));
+      return true;
+    } catch (error) {
+      alert("Could not save. Browser storage may be full. Try a smaller photo.");
+      return false;
+    }
+  }
+
+  function showPage(pageId) {
+    document.querySelectorAll(".page").forEach(page => {
+      page.classList.remove("active");
+    });
+
+    document.getElementById(pageId).classList.add("active");
+
+    if (pageId === "admin") {
+      updateAdminView();
+    }
+  }
+
+  function updateAdminView() {
+    document.getElementById("loginPanel").classList.toggle(
+      "hidden", isAdminLoggedIn
+    );
+    document.getElementById("adminPanel").classList.toggle(
+      "hidden", !isAdminLoggedIn
+    );
+
+    if (isAdminLoggedIn) renderAdminFriends();
+  }
+
+  document.getElementById("loginForm").addEventListener("submit", event => {
+    event.preventDefault();
+
+    const enteredPassword =
+      document.getElementById("adminPassword").value;
+
+    if (enteredPassword === ADMIN_PASSWORD) {
+      isAdminLoggedIn = true;
+      document.getElementById("loginMessage").textContent = "";
+      document.getElementById("adminPassword").value = "";
+      updateAdminView();
+    } else {
+      document.getElementById("loginMessage").textContent =
+        "Incorrect password. Please try again.";
+    }
+  });
+
+  document.getElementById("logoutButton").addEventListener("click", () => {
+    isAdminLoggedIn = false;
+    updateAdminView();
+  });
+
+  function renderFriends() {
+    const grid = document.getElementById("friendsGrid");
+    const search = document.getElementById("searchInput").value
+      .trim().toLowerCase();
+
+    const filtered = students.filter(student =>
+      student.name.toLowerCase().includes(search) ||
+      student.roll.toLowerCase().includes(search)
+    );
+
+    grid.replaceChildren();
+
+    if (filtered.length === 0) {
+      const empty = document.createElement("div");
+      empty.className = "empty";
+      empty.textContent = students.length === 0
+        ? "No friends added yet. The admin can add classmates."
+        : "No classmates match your search.";
+      grid.appendChild(empty);
+      return;
+    }
+
+    filtered.forEach(student => {
+      grid.appendChild(createFriendCard(student, false));
+    });
+  }
+
+  function renderAdminFriends() {
+    const grid = document.getElementById("adminFriendsGrid");
+    grid.replaceChildren();
+
+    if (students.length === 0) {
+      const empty = document.createElement("div");
+      empty.className = "empty";
+      empty.textContent = "No friends to manage yet.";
+      grid.appendChild(empty);
+      return;
+    }
+
+    students.forEach(student => {
+      grid.appendChild(createFriendCard(student, true));
+    });
+  }
+
+  function createFriendCard(student, showDelete) {
+    const card = document.createElement("article");
+    card.className = "friend-card";
+
+    const photo = document.createElement("img");
+    photo.alt = "Photo of " + student.name;
+    photo.src = student.photo ||
+      "data:image/svg+xml;charset=UTF-8," +
+      encodeURIComponent(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300">' +
+        '<rect width="100%" height="100%" fill="#e1e7f0"/>' +
+        '<text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" ' +
+        'font-family="Arial" font-size="24" fill="#52627a">No Photo</text></svg>'
+      );
+
+    const info = document.createElement("div");
+    info.className = "friend-info";
+
+    const name = document.createElement("h3");
+    name.textContent = student.name;
+
+    const roll = document.createElement("p");
+    roll.textContent = "Roll No: " + student.roll;
+
+    info.append(name, roll);
+
+    if (student.house) {
+      const house = document.createElement("p");
+      house.textContent = "House: " + student.house;
+      info.appendChild(house);
+    }
+
+    if (student.address) {
+      const address = document.createElement("p");
+      address.textContent = "Area: " + student.address;
+      info.appendChild(address);
+    }
+
+    card.append(photo, info);
+
+    if (showDelete) {
+      const deleteButton = document.createElement("button");
+      deleteButton.className = "danger";
+      deleteButton.textContent = "Delete Friend";
+      deleteButton.addEventListener("click", () => {
+        if (!isAdminLoggedIn) return;
+
+        if (confirm("Delete " + student.name + " from the directory?")) {
+          students = students.filter(item => item.id !== student.id);
+          if (saveStudents()) {
+            renderFriends();
+            renderAdminFriends();
+          }
+        }
+      });
+      info.appendChild(deleteButton);
+    }
+
+    return card;
+  }
+
+  document.getElementById("studentForm").addEventListener("submit", async event => {
+    event.preventDefault();
+
+    if (!isAdminLoggedIn) return;
+
+    const name = document.getElementById("studentName").value.trim();
+    const roll = document.getElementById("studentRoll").value.trim();
+    const house = document.getElementById("studentHouse").value.trim();
+    const address = document.getElementById("studentAddress").value.trim();
+    const photoInput = document.getElementById("studentPhoto");
+    const file = photoInput.files[0];
+    const message = document.getElementById("formMessage");
+
+    if (!name || !roll) {
+      message.textContent = "Please enter the name and roll number.";
+      return;
+    }
+
+    if (file && !["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
+      message.textContent = "Please choose a JPG, PNG or WebP image.";
+      return;
+    }
+
+    if (file && file.size > 300 * 1024) {
+      message.textContent = "Photo must be smaller than 300 KB.";
+      return;
+    }
+
+    let photo = "";
+
+    if (file) {
+      try {
+        photo = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+      } catch (error) {
+        message.textContent = "Could not read the photo. Please try again.";
+        return;
+      }
+    }
+
+    const student = {
+      id: Date.now().toString() + Math.random().toString(16).slice(2),
+      name,
+      roll,
+      house,
+      address,
+      photo
+    };
+
+    students.push(student);
+
+    if (!saveStudents()) {
+      students.pop();
+      return;
+    }
+
+    event.target.reset();
+    message.textContent = "Friend added successfully!";
+    renderFriends();
+    renderAdminFriends();
+  });
+
+  renderFriends();
+</script>
+
+</body>
+</html>
