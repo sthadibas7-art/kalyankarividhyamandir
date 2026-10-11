@@ -659,18 +659,8 @@
   });
 
  
-async function loadFriendsFromFile() {function exportStudentList() {
-  const json = JSON.stringify(students, null, 2);
-  const blob = new Blob([json], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = "friends.json";
-  link.click();
-
-  URL.revokeObjectURL(url);
-}
+async function loadFriendsFromFile() {
+async function loadFriendsFromFile() {
   try {
     const response = await fetch("./friends.json", { cache: "no-store" });
 
@@ -684,7 +674,6 @@ async function loadFriendsFromFile() {function exportStudentList() {
       throw new Error("friends.json must contain a list");
     }
 
-    // Use the file's students when this browser has no saved list.
     if (!localStorage.getItem(STORAGE_KEY)) {
       students = data;
     }
@@ -697,12 +686,12 @@ async function loadFriendsFromFile() {function exportStudentList() {
   }
 }
 
-loadFriendsFromFile();function exportStudentList() {
+function exportStudentList() {
   const json = JSON.stringify(students, null, 2);
   const blob = new Blob([json], { type: "application/json" });
   const url = URL.createObjectURL(blob);
-
   const link = document.createElement("a");
+
   link.href = url;
   link.download = "friends.json";
   document.body.appendChild(link);
@@ -712,6 +701,8 @@ loadFriendsFromFile();function exportStudentList() {
   URL.revokeObjectURL(url);
 }
 
+loadFriendsFromFile();
+}
 </script>
 
 </body>
